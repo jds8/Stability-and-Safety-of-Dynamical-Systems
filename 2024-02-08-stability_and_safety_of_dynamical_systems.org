@@ -15,7 +15,7 @@
 
 #+LATEX_HEADER: \setlength{\parindent}{0pt}
 
-* Safety and Stability of Dynamical Systems
+* Stability and Safety of Dynamical Systems
 ** Uncontrolled Dynamical System
 *** Stochastic
 **** Continuous Time
