@@ -1,0 +1,154 @@
+:PROPERTIES:
+:ID:       610b22b2-e8e4-40a0-82d3-6d3514d1fa3f
+:END:
+#+TITLE: Stability and Safety of Dynamical Systems
+#+AUTHOR: Justice Sefas
+#+OPTIONS: toc:nil num:nil tex:t html-postamble:nil
+#+OPTIONS: broken-links:t
+
+#+LATEX_HEADER: \usepackage{amsfonts}
+#+LATEX_HEADER: \usepackage{physics}
+
+#+LATEX_HEADER: \usepackage{bbm}
+
+#+LATEX_HEADER: \usepackage{amsthm}
+
+#+LATEX_HEADER: \setlength{\parindent}{0pt}
+
+* Safety and Stability of Dynamical Systems
+** Uncontrolled Dynamical System
+*** Stochastic
+**** Continuous Time
+***** Continuous Space
+****** Stochastic Differential Equation
+***** Discrete Space
+****** Continuous-time Markov Chain
+**** Discrete Time
+***** Continuous Space
+****** Markov Chain
+******* Under what conditions can we show that the system is stable?
+- Foster-Lyapunov Functions
+***** Discrete Space
+****** Markov Chain
+******* Under what conditions can we show that the system is stable?
+- Foster-Lyapunov Functions
+*** Deterministic
+**** Continuous Time
+***** Continuous Space
+****** Ordinary Differential Equations
+******* Under what conditions can we show that the system is stable?
+******** Linear Systems: dx/dt = Ax
+- If the real part of all eigenvalues of A are negative, the system is stable.
+******** Nonlinear Systems: dx/dt = f(x)
+- We cannot know if the system is *globally* stable, but we can check if *equilibrium points* (x values where dx/dt = 0) are *locally* stable by computing the first order Taylor approximation (“linearizing”) and checking that all of the eigenvalues of the resultant Jacobian are negative. If not, we either have a *saddle point* or *local maximum*.
+  - If one of the eigenvalues of the Jacobian is positive, then the system diverges from the equilibrium point at which time the linearization no longer holds.
+- Alternatively, the existence of a [[id:29ae2cd5-d575-49d3-b1fe-2c9afd071a61][Lyapunov Function]] is a *necessary and sufficient condition* for stability
+********* In what cases can we find a Lyapunov function?
+- IDK, look for square terms
+******** References
+- https://physiology.med.cornell.edu/people/banfelder/qbio/resources_2008/4.2_Differential_Equations.pdf
+****** Partial Differential Equations
+***** Discrete Space
+****** Not Sure
+**** Discrete Time
+***** Continuous Space
+****** Difference Equations
+***** Discrete Space
+****** Finite Automata
+
+** Controlled Dynamical System
+*** Stochastic
+**** Continuous Time
+***** Continuous Space
+****** Continuous-time Markov Decision Process
+***** Discrete Space
+****** Continuous-time Markov Decision Process
+****** Discrete-event Dynamic system
+**** Discrete Time
+***** Continuous Space
+****** Markov Decision Process
+******* Continuous Action/Control
+- [[id:ceb63e44-3a2b-4367-ab79-9dd17855e40e][Policy Gradient Methods]]
+  - e.g. [[id:d8a9234b-398f-4ad5-ad3d-130e4b63c307][TRPO]] [[id:99d0f2e2-f8ff-43a2-8a53-7f603eb16a2b][PPO]], [[id:5f12417c-ba57-484c-819d-d9f7f68e7694][SAC]], DDPG
+  - https://lilianweng.github.io/posts/2018-04-08-policy-gradient/
+- we can construct a *conservatively discretized* "safety MDP" from the original continuous-state MDP and synthesize a controller using linear temporal logic which satisfies guarantees
+  - https://hanspeterschaub.info/Papers/Harris2020.pdf works in POMDPs as well
+  - when does this fail?
+    - in what cases can we *not construct* a conservatively discretized safety MDP?
+******** What can we do in continuous action spaces that we cannot do in discrete action spaces?
+******** Under what conditions can we show the system is safe?
+- if the *state space is compact (closed and bounded)* we can discretize it and use a [[id:50579a3f-8ff0-49ec-9614-f629a508b657][Reach-Avoid Supermartingale]] if the dynamics is [[id:2cce077f-52f2-4dd4-b1e0-9728094988ea][lipschitz continuous]] to show the system is *safe up to some probability*
+  - https://arxiv.org/abs/2210.05308
+    - under what conditions does this fail?
+      - "in general, it is not possible to compute a closed form expression for the expected value of an RASM over successor system states, as both the policy and the RASM are neural networks."
+  - https://arxiv.org/abs/2312.01456
+******* Discrete Action/Control
+******** What can we do in discrete action spaces that we cannot do in continuous action spaces?
+- Deep Q-learning ([[id:ce319b92-d08a-4d74-ad96-49a402c27df6][DQN]]) uses [[id:70b85ac1-3c1a-45c1-80fe-55f83e36eb6c][Temporal Differencing]] as its loss and outputs a softmax over all possible actions
+  - note that DQN cannot keep a state-action table as in Q-Learning because the state space is continuous
+- construct a "probabilistic [[id:443299d0-541d-4889-acc1-98ad9ce8da5c][shield]]" by enumerating over all possible actions
+  - https://arxiv.org/pdf/2303.03226.pdf
+****** POMDP
+***** Discrete Space
+****** Markov Decision Process
+******* Continuous Action/Control
+******** What can we do in continuous action spaces that we cannot do in discrete action spaces?
+******* Discrete Action/Control
+******** What can we do in discrete action spaces that we cannot do in continuous action spaces?
+********* [[id:2882a7e4-9410-47eb-85da-70d02db6b502][On-Policy]] Algorithms
+- SARSA is very similar to Q-learning (see below), but it updates its Q-table according to the [[id:91bca60c-f545-465c-93f5-b05cf15e6c18][epsilon-greedy algorithm]] it uses to take actions
+  - SARSA *does not use or learn* a model of the dynamics yet converges to an epsilon-greedy policy, which is "very close" to optimal
+********* [[id:e2b4c1b2-9505-463b-ab93-723c9353e702][Off-Policy]] Algorithms
+- [[id:d424f0b7-3d47-4f69-9198-856bd2c4be75][Q-Learning]] maintains a state-action table which is *only possible in the discrete space, discrete action regime*
+  - Moreover, Q-learning:
+    - *does not use or learn* a model of the dynamics yet converges to the optimal policy *if the optimal policy is deterministic*
+    - Q-learning is off-policy because it updates its Q-table deterministically using the argmax action yet samples actions according to a *different policy* (an epsilon-greedy policy) *during training*
+****** POMDP
+*** Deterministic
+**** Continuous Time
+***** Continuous Space
+****** Controlled Dynamical System
+******* Under what conditions can we show that the system is stable?
+- If we can find a Control-Lyapunov Function
+******** In what cases can we find a Control-Lyapunov function?
+- People have used [[id:d0826af7-3c7e-4c4f-8019-921c8c7f6ff8][Neural Networks]] to learn one along with a verifier: https://arxiv.org/abs/2005.00611
+******* Under what conditions can we show that the system is safe?
+- If we use [[id:cd406cbd-e56a-4e57-8b40-cd69c3502f42][Control Barrier Function]]s
+******** In what cases can we use a Control Barrier function?
+- https://arxiv.org/abs/1903.11199
+******* Continuous Action/Control
+******** What can we do in continuous action spaces that we cannot do in discrete action spaces?
+- Verifiable reinforcement learning via policy extraction
+******* Discrete Action/Control
+******** What can we do in discrete action spaces that we cannot do in continuous action spaces?
+***** Discrete Space
+****** Discrete-event Dynamic System
+**** Discrete Time
+***** Continuous Space
+****** Deterministic Markov Decision Process
+****** Controlled Difference Equation
+***** Discrete Space
+****** Controlled Finite Automata (Video Games)
+- dynamic programming
+  - *policy iteration* and *value iteration* require a *perfect model of the MDP*, i.e. known dynamics and reward
+    - https://www.baeldung.com/cs/ml-value-iteration-vs-policy-iteration
+******* Under what conditions can we show that the system is safe?
+- we can provably solve Pong (woohoo!) by using *symbolic state spaces* and synthesizing a decision-tree policy from a neural network policy
+  - https://arxiv.org/pdf/1805.08328.pdf
+
+* Questions
+- What's the relationship between *stability* and *safety*?
+- How are Control-Lyapunov functions related to Control-Barrier functions?
+- How are Lyapunov functions related to reach-avoid supermartingales (RASM)?
+  - a RASM is a Lyapunov function "in expectation"
+  - Lyapunov functions are non-increasing about the equilibrium point whereas RASMs are non-increasing *in expectation* about the target state
+  - https://link.springer.com/content/pdf/10.1007/978-1-4757-3124-8_5.pdf
+- What the heck is a Foster-Lyapunov function?
+  - https://appliedprobability.blog/2018/06/22/foster-lyapunov/
+- Is it even possible to verify neural networks?
+  - https://arxiv.org/abs/2109.10317
+- In what regimes are [[id:e288c7ff-72b4-4ae6-9d32-d298cc9f1f7e][PRISM (verification)]] and [[id:e288c7ff-72b4-4ae6-9d32-d298cc9f1f7e][Storm (Verification)]] applicable?
+- Even in the regimes where Prism/Storm are applicable, what is the *time complexity* with respect to the *size and dimensionality* of the state and action spaces?
+- In what cases does using (linear, signal) temporal logic fail?
+  - *any system without* discrete, finite, known dynamics
+    - is this true?
