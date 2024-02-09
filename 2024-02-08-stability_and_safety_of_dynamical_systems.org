@@ -69,7 +69,7 @@
 ****** Markov Decision Process
 ******* Continuous Action/Control
 - [[id:ceb63e44-3a2b-4367-ab79-9dd17855e40e][Policy Gradient Methods]]
-  - e.g. [[id:d8a9234b-398f-4ad5-ad3d-130e4b63c307][TRPO]] [[id:99d0f2e2-f8ff-43a2-8a53-7f603eb16a2b][PPO]], [[id:5f12417c-ba57-484c-819d-d9f7f68e7694][SAC]], DDPG
+  - e.g. [[id:d8a9234b-398f-4ad5-ad3d-130e4b63c307][TRPO,]] [[id:99d0f2e2-f8ff-43a2-8a53-7f603eb16a2b][PPO]], [[id:5f12417c-ba57-484c-819d-d9f7f68e7694][SAC]], DDPG
   - https://lilianweng.github.io/posts/2018-04-08-policy-gradient/
 - we can construct a *conservatively discretized* "safety MDP" from the original continuous-state MDP and synthesize a controller using linear temporal logic which satisfies guarantees
   - https://hanspeterschaub.info/Papers/Harris2020.pdf works in POMDPs as well
@@ -152,3 +152,7 @@
 - In what cases does using (linear, signal) temporal logic fail?
   - *any system without* discrete, finite, known dynamics
     - is this true?
+
+* TODO
+- Populate with [[id:9f983716-9845-4d7b-9d9e-927182ad0a88][Classical]] and [[id:96ae9bce-587f-4e75-b7ec-e96c88212977][Optimal Control]]
+  - PID, LQR, [[id:fdd64404-b5fa-4159-bd03-1b7e78379b4e][MPC]]
