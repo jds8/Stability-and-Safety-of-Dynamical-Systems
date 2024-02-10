@@ -26,10 +26,18 @@
 **** Discrete Time
 ***** Continuous Space
 ****** Markov Chain
+- e.g. [[id:54ff2c21-d097-4323-b3ab-1638d3d55680][SMC]]/Particle Filter, [[id:296494de-31f1-49e9-b26f-67a8a856e618][linear gaussian model]]
+******* Linear Gaussian Systems: $z_{t+1} = Az_t + w_t, w_t \sim N(\mu_z, \Sigma_z)$ and $x_t = Cz_t + v_t, v_t \sim N(\mu_x, \Sigma_x)$
+- In such models, the [[id:37fdcbef-2dae-41c1-85b5-b2c429a92332][Filtering Distribution]] and [[id:165302de-a963-49ae-8128-29052722facf][Smoothing Posterior]] can be found exactly since the [[id:8ec828b1-3e78-4058-afa3-b0d3314c2059][Marginal Likelihood]] can be derived analytically
+******* Nonlinear Gaussian Systems: $x_k = f(x_{k-1}, u_k) + w_k$ and $z_k = h(x_k) + v_k$ for nonlinear $f,h$
+- [[id:f56999b3-c582-4fe4-8a2e-4765f888dc07][Sequential Monte Carlo]]
 ******* Under what conditions can we show that the system is stable?
 - Foster-Lyapunov Functions
 ***** Discrete Space
 ****** Markov Chain
+- e.g. Hidden Markov Model
+  - Viterbi algorithm finds the [[id:37f3fbc1-6242-4e75-bed8-acd669e33418][MAP]] of the most likely sequence for a given set of observations
+  - The Forward-Backward algorithm computes the smoothing distribution
 ******* Under what conditions can we show that the system is stable?
 - Foster-Lyapunov Functions
 *** Deterministic
@@ -48,11 +56,20 @@
 ******** References
 - https://physiology.med.cornell.edu/people/banfelder/qbio/resources_2008/4.2_Differential_Equations.pdf
 ****** Partial Differential Equations
+******* Under what conditions can we show that the system is stable?
+******** Linear Systems: L(u) = f where L is a linear operator (i.e. it only involves linear functions of u and its derivatives) and f doesn't depend on u
+- [[https://math.mit.edu/classes/18.311/WWW2011/Notes/NumSchemeStab.pdf][von Neumann stability analysis (Fourier stability analysis)]]
+******** Nonlinear Systems:
+- [[https://en.wikipedia.org/wiki/Lax_equivalence_theorem][Lax equivalence theorem (convergent <==> stable)]]
 ***** Discrete Space
 ****** Not Sure
 **** Discrete Time
 ***** Continuous Space
 ****** Difference Equations
+******* Under what conditions can we show that the system is stable?
+******** Linear Systems: x(t+1) = Ax(t)
+- If the *absolute value of the eigenvalues* of $A$ are all *less than 1* (note not less than 0 as in the ODE case), then the system is stable
+******** Nonlinear Systems: dx/dt = f(x)
 ***** Discrete Space
 ****** Finite Automata
 
@@ -60,6 +77,7 @@
 *** Stochastic
 **** Continuous Time
 ***** Continuous Space
+****** Controlled Stochastic Differential Equation
 ****** Continuous-time Markov Decision Process
 ***** Discrete Space
 ****** Continuous-time Markov Decision Process
@@ -68,6 +86,7 @@
 ***** Continuous Space
 ****** Markov Decision Process
 ******* Continuous Action/Control
+******** [[id:3a03b503-13d4-4d4d-907b-529c2337ad8d][Reinforcement Learning]]
 - [[id:ceb63e44-3a2b-4367-ab79-9dd17855e40e][Policy Gradient Methods]]
   - e.g. [[id:d8a9234b-398f-4ad5-ad3d-130e4b63c307][TRPO,]] [[id:99d0f2e2-f8ff-43a2-8a53-7f603eb16a2b][PPO]], [[id:5f12417c-ba57-484c-819d-d9f7f68e7694][SAC]], DDPG
   - https://lilianweng.github.io/posts/2018-04-08-policy-gradient/
@@ -87,6 +106,7 @@
 - Deep Q-learning ([[id:ce319b92-d08a-4d74-ad96-49a402c27df6][DQN]]) uses [[id:70b85ac1-3c1a-45c1-80fe-55f83e36eb6c][Temporal Differencing]] as its loss and outputs a softmax over all possible actions
   - note that DQN cannot keep a state-action table as in Q-Learning because the state space is continuous
 - construct a "probabilistic [[id:443299d0-541d-4889-acc1-98ad9ce8da5c][shield]]" by enumerating over all possible actions
+  - note that this *requires a discrete state abstraction* (see Shielding section under Discrete Space below)
   - https://arxiv.org/pdf/2303.03226.pdf
 ****** POMDP
 ***** Discrete Space
@@ -95,6 +115,10 @@
 ******** What can we do in continuous action spaces that we cannot do in discrete action spaces?
 ******* Discrete Action/Control
 ******** What can we do in discrete action spaces that we cannot do in continuous action spaces?
+********* Shielding
+- shielding creates a finite state and action MDP abstraction from a (potentially) continuous state and action MDP
+- linear temporal logic specifications are placed on finite MDP and reactive synthesis tools such as [[id:e288c7ff-72b4-4ae6-9d32-d298cc9f1f7e][PRISM]] are used for model checking to synthesize a policy (through dynamic programming?)
+  - https://hanspeterschaub.info/Papers/Harris2020.pdf is done in a POMDP
 ********* [[id:2882a7e4-9410-47eb-85da-70d02db6b502][On-Policy]] Algorithms
 - SARSA is very similar to Q-learning (see below), but it updates its Q-table according to the [[id:91bca60c-f545-465c-93f5-b05cf15e6c18][epsilon-greedy algorithm]] it uses to take actions
   - SARSA *does not use or learn* a model of the dynamics yet converges to an epsilon-greedy policy, which is "very close" to optimal
@@ -108,6 +132,19 @@
 **** Continuous Time
 ***** Continuous Space
 ****** Controlled Dynamical System
+******* [[id:9f983716-9845-4d7b-9d9e-927182ad0a88][Classical Control]]
+******** Kalman-Bucy Filter
+- continuous-time analog to Kalman Filter
+******* [[id:96ae9bce-587f-4e75-b7ec-e96c88212977][Optimal Control]]
+******** Linear Systems
+********* Linear-Quadratic-Regulator
+- Linear-Quadratic Regulators are [[id:2296313e-9a11-4cfa-8899-d70b14cf8753][Feedback Controller]]s whose dynamics are *linear ODEs* but include a *quadratic cost*
+  - *continuous-time analogs to Kalman Filters* with an additional cost function
+  - special cases include linear-quadratic-Gaussian
+********** Linear-Quadratic-Gaussian
+- uses a Kalman Filter for *state estimation* and an LQR for *state feedback*
+******** Nonlinear Systems
+********* Model Predictive Control
 ******* Under what conditions can we show that the system is stable?
 - If we can find a Control-Lyapunov Function
 ******** In what cases can we find a Control-Lyapunov function?
@@ -118,13 +155,21 @@
 - https://arxiv.org/abs/1903.11199
 ******* Continuous Action/Control
 ******** What can we do in continuous action spaces that we cannot do in discrete action spaces?
-- Verifiable reinforcement learning via policy extraction
 ******* Discrete Action/Control
 ******** What can we do in discrete action spaces that we cannot do in continuous action spaces?
 ***** Discrete Space
 ****** Discrete-event Dynamic System
 **** Discrete Time
 ***** Continuous Space
+****** [[id:9f983716-9845-4d7b-9d9e-927182ad0a88][Classical Control]]
+******* Linear Systems
+******** Kalman Filter
+- like [[id:296494de-31f1-49e9-b26f-67a8a856e618][linear gaussian model]]s but include a *linear control input* on the state process
+******** Linear-Quadratic-Regulator
+- can also be used in discrete time
+******* Nonlinear Gaussian Systems
+******** Extended Kalman Filter
+******** Unscented Kalman Filter
 ****** Deterministic Markov Decision Process
 ****** Controlled Difference Equation
 ***** Discrete Space
@@ -138,6 +183,9 @@
 
 * Questions
 - What's the relationship between *stability* and *safety*?
+  - similarities:
+  - differences
+    "Stability pertains to the systems ability (controller or not) to converge to an equilibrium point. Assymptotic stability means that the system as time goes to infinity the system is stable. In a controlled system, you can have a system that is unstable without the controller, but the controller is designed in such a way to make the closed loop system stable - fighter jets are such examples. Safety are best viewed as constraints, so just because a system is stable it does not necessarily mean it is safe. If there are trajectories heading towards the stable equilibrium point cross a safety constraint, then even though the system is stable it is not safe. So the question about safety is does there exist trajectories which violate the safety criteria. Now you can have a system which is safe but unstable, think of a spiraling outward oscillator. But a closed-loop system that is unstable for practical purposes are generally not of interest because the whole study of control is to get the system to a desired state or follow some desired trajectory. Designing a controller to have a closed loop system that is stable is a big part of control theory, which in the traditional way of going about it is with respect to a frequency analysis - in continuous time this is about designing a feedback controller whose real part of the poles (roots of a Laplace transform polynomial) are in the left hand plane. In discrete time the z-transform is used and then it's about ensuring that the poles are within the unit circle. These are directly related to being able to write down the dynamics as driven differential equations"
 - How are Control-Lyapunov functions related to Control-Barrier functions?
 - How are Lyapunov functions related to reach-avoid supermartingales (RASM)?
   - a RASM is a Lyapunov function "in expectation"
@@ -154,5 +202,3 @@
     - is this true?
 
 * TODO
-- Populate with [[id:9f983716-9845-4d7b-9d9e-927182ad0a88][Classical]] and [[id:96ae9bce-587f-4e75-b7ec-e96c88212977][Optimal Control]]
-  - PID, LQR, [[id:fdd64404-b5fa-4159-bd03-1b7e78379b4e][MPC]]
