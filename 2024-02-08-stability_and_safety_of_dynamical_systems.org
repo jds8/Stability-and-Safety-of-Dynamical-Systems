@@ -121,11 +121,11 @@
   - https://hanspeterschaub.info/Papers/Harris2020.pdf is done in a POMDP
 ********* [[id:2882a7e4-9410-47eb-85da-70d02db6b502][On-Policy]] Algorithms
 - SARSA is very similar to Q-learning (see below), but it updates its Q-table according to the [[id:91bca60c-f545-465c-93f5-b05cf15e6c18][epsilon-greedy algorithm]] it uses to take actions
-  - SARSA *does not use or learn* a model of the dynamics yet converges to an epsilon-greedy policy, which is "very close" to optimal
+  - SARSA *does not use or learn* a model (i.e., it's [[id:2282c6fe-3571-4a62-9daf-4065e649a70c][Model Free RL]]) of the dynamics yet converges to an epsilon-greedy policy, which is "very close" to optimal
 ********* [[id:e2b4c1b2-9505-463b-ab93-723c9353e702][Off-Policy]] Algorithms
 - [[id:d424f0b7-3d47-4f69-9198-856bd2c4be75][Q-Learning]] maintains a state-action table which is *only possible in the discrete space, discrete action regime*
   - Moreover, Q-learning:
-    - *does not use or learn* a model of the dynamics yet converges to the optimal policy *if the optimal policy is deterministic*
+    - *does not use or learn* a model of the dynamics (i.e, it's [[id:2282c6fe-3571-4a62-9daf-4065e649a70c][Model Free RL]]) yet converges to the optimal policy *if the optimal policy is deterministic*
     - Q-learning is off-policy because it updates its Q-table deterministically using the argmax action yet samples actions according to a *different policy* (an epsilon-greedy policy) *during training*
 ****** POMDP
 *** Deterministic
@@ -175,7 +175,7 @@
 ***** Discrete Space
 ****** Controlled Finite Automata (Video Games)
 - dynamic programming
-  - *policy iteration* and *value iteration* require a *perfect model of the MDP*, i.e. known dynamics and reward
+  - *policy iteration* and [[id:121304d1-9c38-4e69-b12f-d7987b62afc5][Value Iteration]] require a *perfect model of the MDP*, i.e. known dynamics and reward
     - https://www.baeldung.com/cs/ml-value-iteration-vs-policy-iteration
 ******* Under what conditions can we show that the system is safe?
 - we can provably solve Pong (woohoo!) by using *symbolic state spaces* and synthesizing a decision-tree policy from a neural network policy
@@ -196,7 +196,11 @@
 - Is it even possible to verify neural networks?
   - https://arxiv.org/abs/2109.10317
 - In what regimes are [[id:e288c7ff-72b4-4ae6-9d32-d298cc9f1f7e][PRISM (verification)]] and [[id:e288c7ff-72b4-4ae6-9d32-d298cc9f1f7e][Storm (Verification)]] applicable?
+  - these model checkers can only be used in discrete, finite [[id:af01dbc9-f776-4dd7-8899-6f1e73fcb77c][MDP]]s, i.e. where the state and action spaces are discrete so that dynamic programming techniques such as [[id:121304d1-9c38-4e69-b12f-d7987b62afc5][Value Iteration]] can be run
 - Even in the regimes where Prism/Storm are applicable, what is the *time complexity* with respect to the *size and dimensionality* of the state and action spaces?
+  - the [[id:b18550c9-d1a9-40c0-a53c-3d5ab025004a][time complexity of value iteration]] is $O(|S|^2|A|)$ since, for each state, it iterates over *all possible actions and future states* $O(|S|\cdot|A|)$
+    - https://ai.stackexchange.com/questions/9019/what-is-the-time-complexity-of-the-value-iteration-algorithm
+    - https://arxiv.org/abs/1807.04920
 - In what cases does using (linear, signal) temporal logic fail?
   - *any system without* discrete, finite, known dynamics
     - is this true?
