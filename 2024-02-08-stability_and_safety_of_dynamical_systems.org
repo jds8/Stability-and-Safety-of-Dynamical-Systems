@@ -151,12 +151,18 @@
 - People have used [[id:d0826af7-3c7e-4c4f-8019-921c8c7f6ff8][Neural Networks]] to learn one along with a verifier: https://arxiv.org/abs/2005.00611
 ******* Under what conditions can we show that the system is safe?
 - If we use [[id:cd406cbd-e56a-4e57-8b40-cd69c3502f42][Control Barrier Function]]s
+  - Given an unsafe controller and a [[id:cd406cbd-e56a-4e57-8b40-cd69c3502f42][Control Barrier Function]] for an [[id:4b4f5379-8c1c-4ffb-bb3a-08c4fb57cd30][Affine Control System]], we can construct a quadratic program to *synthesize a safe controller*
 ******** In what cases can we use a Control Barrier function?
 - https://arxiv.org/abs/1903.11199
+  - [[id:4b4f5379-8c1c-4ffb-bb3a-08c4fb57cd30][Affine Control System]]s that are locally [[id:2cce077f-52f2-4dd4-b1e0-9728094988ea][lipschitz continuous]]
+  - the control barrier function must be continuously differentiable
+******** In what cases can we find a Control Barrier function?
 ******* Continuous Action/Control
 ******** What can we do in continuous action spaces that we cannot do in discrete action spaces?
+- we can set up quadratic programs or sum-of-squares programs or semidefinite programming and perform constrained optimization over control inputs
 ******* Discrete Action/Control
 ******** What can we do in discrete action spaces that we cannot do in continuous action spaces?
+- for small enough action spaces, we can enumerate all possible actions
 ***** Discrete Space
 ****** Discrete-event Dynamic System
 **** Discrete Time
