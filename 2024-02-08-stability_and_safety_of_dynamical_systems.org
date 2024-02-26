@@ -183,10 +183,16 @@
 
 * Questions
 - What's the relationship between *stability* and *safety*?
+  - https://arxiv.org/pdf/2309.05837.pdf
   - similarities:
+    - if a *region of attraction* can be found (e.g. by using a [[id:29ae2cd5-d575-49d3-b1fe-2c9afd071a61][Lyapunov Function]]) and that region is disjoint from the [[id:e105f69c-375a-4fcb-a338-96340ebf21c5][Failure Domain]], then it is a [[id:4deb705f-da52-45ac-ab73-79161bdf371b][Safe Set]]
   - differences
     "Stability pertains to the systems ability (controller or not) to converge to an equilibrium point. Assymptotic stability means that the system as time goes to infinity the system is stable. In a controlled system, you can have a system that is unstable without the controller, but the controller is designed in such a way to make the closed loop system stable - fighter jets are such examples. Safety are best viewed as constraints, so just because a system is stable it does not necessarily mean it is safe. If there are trajectories heading towards the stable equilibrium point cross a safety constraint, then even though the system is stable it is not safe. So the question about safety is does there exist trajectories which violate the safety criteria. Now you can have a system which is safe but unstable, think of a spiraling outward oscillator. But a closed-loop system that is unstable for practical purposes are generally not of interest because the whole study of control is to get the system to a desired state or follow some desired trajectory. Designing a controller to have a closed loop system that is stable is a big part of control theory, which in the traditional way of going about it is with respect to a frequency analysis - in continuous time this is about designing a feedback controller whose real part of the poles (roots of a Laplace transform polynomial) are in the left hand plane. In discrete time the z-transform is used and then it's about ensuring that the poles are within the unit circle. These are directly related to being able to write down the dynamics as driven differential equations"
 - How are Control-Lyapunov functions related to Control-Barrier functions?
+  - CBFs were explicitly invented to combine (control) Lyapunov functions with [[id:a3928717-09cc-49ec-a24f-766c701916c0][Barrier Certificate]]s to attain both stability and safety beyond the boundary of the [[id:4deb705f-da52-45ac-ab73-79161bdf371b][Safe Set]].
+    - In particular, Lyapunov functions have [[id:08c78d77-1ebf-43db-9b7c-cd896b5baf73][invariant level set]]s, so [[id:afdfeb9e-481f-4420-8ca9-890d05d407cc][Nagumo's Theorem]] gives us that there is a function where $\dot{h}\ge 0$ on the boundary of the invariant set. If we combine these level sets, then we get *invariance on the entire closed region*
+    - see [[id:ccefedba-4bb5-43f0-be04-805e2882d51f][Ames et al. - 2019 - Control Barrier Functions Theory and Applications]] for a description of the history and relationship
+      - Ames describes CBFs as the "safety dual" of CLFs (which are for stability)
 - How are Lyapunov functions related to reach-avoid supermartingales (RASM)?
   - a RASM is a Lyapunov function "in expectation"
   - Lyapunov functions are non-increasing about the equilibrium point whereas RASMs are non-increasing *in expectation* about the target state
@@ -204,5 +210,7 @@
 - In what cases does using (linear, signal) temporal logic fail?
   - *any system without* discrete, finite, known dynamics
     - is this true?
+- How have other people unified these ideas?
+  - https://inria.hal.science/hal-02926215/document
 
 * TODO
