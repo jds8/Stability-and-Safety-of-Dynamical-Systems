@@ -152,6 +152,7 @@
 ******* Under what conditions can we show that the system is safe?
 - If we use [[id:cd406cbd-e56a-4e57-8b40-cd69c3502f42][Control Barrier Function]]s
   - Given an unsafe controller and a [[id:cd406cbd-e56a-4e57-8b40-cd69c3502f42][Control Barrier Function]] for an [[id:4b4f5379-8c1c-4ffb-bb3a-08c4fb57cd30][Affine Control System]], we can construct a quadratic program to *synthesize a safe controller*
+    - The system can be nonlinear but must be affine in the control input due to the [[id:f6d86003-9bfd-47a5-9736-2d5e2ea8793c][Control Barrier Function Condition]]: $\sup_{u\in U}\left[L_f h(x) + L_g h(x)u\right]\ge -\alpha(h(x))$ where $h$ is the CBF, $L_f,L_g$ are Lie derivatives, and $\alpha$ is an [[id:b9ca95bd-1334-4f4b-8f8c-89b173f658b3][Extended Class Kappa Infinity Function]]
 ******** In what cases can we use a Control Barrier function?
 - https://arxiv.org/abs/1903.11199
   - [[id:4b4f5379-8c1c-4ffb-bb3a-08c4fb57cd30][Affine Control System]]s that are locally [[id:2cce077f-52f2-4dd4-b1e0-9728094988ea][lipschitz continuous]]
